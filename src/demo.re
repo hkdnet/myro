@@ -1,6 +1,5 @@
 [%raw "require('isomorphic-fetch')"];
 
-let () = Js.log("Hello, BuckleScript");
 let abort = message => {
   Js.Console.error(message);
   exit(1);
