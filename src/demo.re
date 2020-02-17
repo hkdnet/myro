@@ -12,8 +12,7 @@ let main = token => {
        Js.Promise.resolve();
      });
 };
-let tokenOp = Js.Nullable.toOption(Env.natureToken);
-switch (tokenOp) {
+switch (Js.Nullable.toOption(Env.natureToken)) {
 | None => abort("No token")
 | Some(token) => main(token)
 };
