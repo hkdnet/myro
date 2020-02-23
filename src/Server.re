@@ -52,7 +52,7 @@ let start = (token, port) => {
                  Js.Dict.entries(metrics)
                  |> Array.map(((k, v)) => {j|$k $v|j});
                let b = String.concat("\n", Array.to_list(lines));
-               String.concat("\n", [s, b]);
+               String.concat("\n", [b, s]);
              },
              "",
              metrics,
