@@ -35,7 +35,7 @@ let start = (token, port) => {
   // remove X-Powered-By header
   App.disable(app, ~name="x-powered-by");
 
-  App.get(app, ~path="/") @@
+  App.get(app, ~path="/metrics") @@
   PromiseMiddleware.from((_next, _req, res) => {
     Js.Console.log("request received");
     Client.getDevices(token)
