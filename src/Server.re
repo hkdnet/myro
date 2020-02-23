@@ -1,15 +1,51 @@
 open Express;
 
+let createMetrics = devices => {
+  let f = (device: Client.device) => {
+    let name = device.name;
+    let ev = device.newestEvents;
+    let metrics = Js.Dict.empty();
+    Js.Dict.set(
+      metrics,
+      {j|nature-$name-temperature|j},
+      Js.Json.number(ev.temperature.val_ +. device.temperatureOffset),
+    );
+    Js.Dict.set(
+      metrics,
+      {j|nature-$name-humidity|j},
+      Js.Json.number(ev.humidity.val_ +. device.humidityOffset),
+    );
+    Js.Dict.set(
+      metrics,
+      {j|nature-$name-illumination|j},
+      Js.Json.number(ev.illumination.val_),
+    );
+    Js.Dict.set(
+      metrics,
+      {j|nature-$name-movement|j},
+      Js.Json.number(ev.movement.val_),
+    );
+    Js.Json.object_(metrics);
+  };
+  Js.Json.array(Array.map(f, devices));
+};
 let start = (token, port) => {
   let app = express();
 
   // remove X-Powered-By header
   App.disable(app, ~name="x-powered-by");
 
+  // nature-$device-humidity
+  // nature-$device-temperature
+  // nature-$device-humidity
+  // nature-$device-humidity
   App.get(app, ~path="/") @@
   PromiseMiddleware.from((_next, _req, res) => {
     Client.getDevices(token)
-    |> Js.Promise.then_(e => Js.Promise.resolve(Response.sendJson(e, res)))
+    |> Js.Promise.then_(devices => {
+         let metrics = createMetrics(devices);
+         Js.Promise.resolve(Response.sendJson(metrics, res));
+       })
   });
 
   App.listen(app, ~port, ());
