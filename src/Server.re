@@ -7,22 +7,22 @@ let createMetrics = devices => {
     let metrics = Js.Dict.empty();
     Js.Dict.set(
       metrics,
-      {j|nature-temperature{device_name="$name"}|j},
+      {j|nature_temperature{device_name="$name"}|j},
       Js.Json.number(ev.temperature.val_ +. device.temperatureOffset),
     );
     Js.Dict.set(
       metrics,
-      {j|nature-humidity{device_name="$name"}|j},
+      {j|nature_humidity{device_name="$name"}|j},
       Js.Json.number(ev.humidity.val_ +. device.humidityOffset),
     );
     Js.Dict.set(
       metrics,
-      {j|nature-illumination{device_name="$name"}|j},
+      {j|nature_illumination{device_name="$name"}|j},
       Js.Json.number(ev.illumination.val_),
     );
     Js.Dict.set(
       metrics,
-      {j|nature-movement{device_name="$name"}|j},
+      {j|nature_movement{device_name="$name"}|j},
       Js.Json.number(ev.movement.val_),
     );
     metrics;
@@ -35,10 +35,6 @@ let start = (token, port) => {
   // remove X-Powered-By header
   App.disable(app, ~name="x-powered-by");
 
-  // nature-$device-humidity
-  // nature-$device-temperature
-  // nature-$device-humidity
-  // nature-$device-humidity
   App.get(app, ~path="/") @@
   PromiseMiddleware.from((_next, _req, res) => {
     Js.Console.log("request received");
