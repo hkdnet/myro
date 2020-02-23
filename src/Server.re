@@ -58,7 +58,7 @@ let start = (token, port) => {
            );
 
          Js.Promise.resolve(Response.sendString(body, res));
-       })
+       });
   });
 
   App.listen(app, ~port, ());
