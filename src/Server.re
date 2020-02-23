@@ -7,22 +7,22 @@ let createMetrics = devices => {
     let metrics = Js.Dict.empty();
     Js.Dict.set(
       metrics,
-      {j|nature-$name-temperature|j},
+      {j|nature-temperature{device_name=$name}|j},
       Js.Json.number(ev.temperature.val_ +. device.temperatureOffset),
     );
     Js.Dict.set(
       metrics,
-      {j|nature-$name-humidity|j},
+      {j|nature-humidity{device_name=$name}|j},
       Js.Json.number(ev.humidity.val_ +. device.humidityOffset),
     );
     Js.Dict.set(
       metrics,
-      {j|nature-$name-illumination|j},
+      {j|nature-illumination{device_name=$name}|j},
       Js.Json.number(ev.illumination.val_),
     );
     Js.Dict.set(
       metrics,
-      {j|nature-$name-movement|j},
+      {j|nature-movement{device_name=$name}|j},
       Js.Json.number(ev.movement.val_),
     );
     metrics;
