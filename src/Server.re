@@ -25,9 +25,9 @@ let createMetrics = devices => {
       {j|nature-$name-movement|j},
       Js.Json.number(ev.movement.val_),
     );
-    Js.Json.object_(metrics);
+    metrics;
   };
-  Js.Json.array(Array.map(f, devices));
+  Array.map(f, devices);
 };
 let start = (token, port) => {
   let app = express();
@@ -44,7 +44,20 @@ let start = (token, port) => {
     Client.getDevices(token)
     |> Js.Promise.then_(devices => {
          let metrics = createMetrics(devices);
-         Js.Promise.resolve(Response.sendJson(metrics, res));
+         let body =
+           Array.fold_left(
+             (s, metrics) => {
+               let lines =
+                 Js.Dict.entries(metrics)
+                 |> Array.map(((k, v)) => {j|$k $v|j});
+               let b = String.concat("\n", Array.to_list(lines));
+               String.concat("\n", [s, b]);
+             },
+             "",
+             metrics,
+           );
+
+         Js.Promise.resolve(Response.sendString(body, res));
        })
   });
 
