@@ -41,6 +41,7 @@ let start = (token, port) => {
   // nature-$device-humidity
   App.get(app, ~path="/") @@
   PromiseMiddleware.from((_next, _req, res) => {
+    Js.Console.log("request received");
     Client.getDevices(token)
     |> Js.Promise.then_(devices => {
          let metrics = createMetrics(devices);
