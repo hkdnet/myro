@@ -4,26 +4,27 @@ let createMetrics = devices => {
   let f = (device: Client.device) => {
     let name = device.name;
     let ev = device.newestEvents;
+    Js.Console.log(ev);
     let metrics = Js.Dict.empty();
     Js.Dict.set(
       metrics,
       {j|nature_temperature{device_name="$name"}|j},
-      Js.Json.number(ev.temperature.val_ +. device.temperatureOffset),
+      Js.Json.number(ev.temperature.value +. device.temperatureOffset),
     );
     Js.Dict.set(
       metrics,
       {j|nature_humidity{device_name="$name"}|j},
-      Js.Json.number(ev.humidity.val_ +. device.humidityOffset),
+      Js.Json.number(ev.humidity.value +. device.humidityOffset),
     );
     Js.Dict.set(
       metrics,
       {j|nature_illumination{device_name="$name"}|j},
-      Js.Json.number(ev.illumination.val_),
+      Js.Json.number(ev.illumination.value),
     );
     Js.Dict.set(
       metrics,
       {j|nature_movement{device_name="$name"}|j},
-      Js.Json.number(ev.movement.val_),
+      Js.Json.number(ev.movement.value),
     );
     metrics;
   };

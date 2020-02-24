@@ -24,7 +24,10 @@ let getMe = (token: string) => {
   getRequest(token, mePath);
 };
 
-type sensorValue = {val_: float};
+type sensorValue = {
+  value: float,
+  createdAt: Js.Date.t,
+};
 type newestEvents = {
   temperature: sensorValue,
   humidity: sensorValue,
@@ -38,15 +41,18 @@ type device = {
   newestEvents,
 };
 let decodeSensorValue = json => {
-  {val_: json |> Json.Decode.field("val", Json.Decode.float)};
+  {
+    value: json |> Json.Decode.field("val", Json.Decode.float),
+    createdAt: json |> Json.Decode.field("created_at", Json.Decode.date),
+  };
 };
 
 let decodeNewestEvent = json => {
   Json.Decode.{
     temperature: json |> field("te", decodeSensorValue),
-    humidity: json |> field("te", decodeSensorValue),
-    illumination: json |> field("te", decodeSensorValue),
-    movement: json |> field("te", decodeSensorValue),
+    humidity: json |> field("hu", decodeSensorValue),
+    illumination: json |> field("il", decodeSensorValue),
+    movement: json |> field("mo", decodeSensorValue),
   };
 };
 let decodeDevice = json => {
