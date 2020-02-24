@@ -4,6 +4,7 @@ let createMetrics = devices => {
   let f = (device: Client.device) => {
     let name = device.name;
     let ev = device.newestEvents;
+    Js.Console.log(ev);
     let metrics = Js.Dict.empty();
     Js.Dict.set(
       metrics,
